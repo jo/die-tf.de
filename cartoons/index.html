@@ -1,0 +1,99 @@
+<!doctype html> 
+<html lang=en> 
+  <head> 
+    <meta charset=utf-8> 
+    <title>TF</title> 
+    <link rel="shortcut icon" href="/favicon.ico"> 
+    <meta name=description content="TF is TF is TF is TF is Johannes Jörg Schmidt is TF."> 
+    <meta name=author content="Johannes Jörg Schmidt, Berlin"> 
+    <meta name=viewport content="width=device-width, initial-scale=1.0"> 
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
+      #TF {
+        overflow: hidden;
+        text-align: center;
+      }
+      .contact {
+        position: absolute;
+        bottom: 68.618%;
+        right: 0;
+        text-align: right;
+        padding: 1px 3px 0 3px;
+        margin: 0;
+        background-color: black;
+        color: white;
+      }
+      .contact a {
+        text-decoration: none;
+        color: white;
+      }
+      img {
+        float: left;
+      }
+      pre {
+        height: 96px;
+        float: left;
+        line-height: 32px;
+      }
+      img {
+        cursor: pointer;
+      }
+    </style>
+  </head> 
+  <body> 
+    <p class=contact>
+      <a href="/">TF</a>
+      &nbsp;
+      <a href=/jo/>Johannes J. Schmidt</a>
+      &nbsp;
+      <a href="mailto:schmidt@netzmerk.com">schmidt@netzmerk.com</a>
+      &nbsp;
+      <a href=tel:01525-378-65-21>01525 378 65 21</a>
+    </p>
+    <div id=TF></div>
+    <script type="text/javascript"> 
+      var tf = document.getElementById('TF'),
+          imgs = ["tfmetamorphose.gif", "bierbauttf.gif", "tfbombe.gif", "tfentenlauf.gif", "tffahrstuhlliebe.gif", "tfinvers.gif", "tfkloppe.gif", "tfskad.gif", "tfbanner.gif"];
+
+      function close(evt) {
+        location.reload();
+        return false;
+      }
+
+      function open(evt) {
+        var img = new Image;
+        img.src = 'cartoons/' + evt.target.getAttribute('src');
+        tf.innerHTML = '';
+        tf.appendChild(img);
+        img.style.height = window.innerHeight + 'px';
+        img.style.float = 'none';
+        img.onclick = close;
+        return false;
+      }
+
+      function run() {
+        var x = Math.ceil(window.innerWidth / 120),
+            y = Math.ceil(window.innerHeight / 96),
+            cnt = x * y,
+            img;
+
+        tf.style.width = (x * 120 + 100) + 'px';
+        tf.style.height = y * 96 + 'px';
+
+        for (var i = 0; i < cnt; i++) {
+          img = new Image;
+          img.src = imgs[Math.floor(Math.random() * imgs.length)];
+          img.onclick = open;
+          tf.appendChild(img);
+        }
+      }
+
+      run();
+      window.onresize = run;
+    </script> 
+  </body> 
+</html> 
