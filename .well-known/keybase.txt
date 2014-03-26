@@ -1,0 +1,63 @@
+==================================================================
+https://keybase.io/tf
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://die-tf.de
+  * I am tf (https://keybase.io/tf) on keybase.
+  * I have a public key with fingerprint 105E 49AD B0BB 2700 45F6  A242 3F96 EE03 7E73 481C
+
+To claim this, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "fingerprint": "105e49adb0bb270045f6a2423f96ee037e73481c",
+            "host": "keybase.io",
+            "key_id": "3F96EE037E73481C",
+            "uid": "341e6cd9d0a6074d4e01623fdd018800",
+            "username": "tf"
+        },
+        "service": {
+            "hostname": "die-tf.de",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1395871778,
+    "expire_in": 157680000,
+    "prev": "86d79d1e967718fc46fecce45b9286f9c863362636abea2852d5f0b3e0e4f3b2",
+    "seqno": 4,
+    "tag": "signature"
+}
+
+with the aforementioned key, yielding the PGP signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: GnuPG v2.0.22 (GNU/Linux)
+
+owE1kVtIVGEQx3dXuyhUCmKli8mXEdlq57bnspZKZqtoIYpRFi3n8h39NM9Zd49r
+i6tlFyQUC9JAMbUbZuBDRCCVIZW5IlkKESk9lEqB0ksgdKXvmD0NM/P7/2eGubIh
+wmKzZl37GtHoz7NbJ0a+SJYSugjUA0lXgsBVD6rgSlCRVg59Xh/SDOACJOGEjCAq
+EiFJFEcQjFNlRYqhaFVgISRoDnI0w5MycIAK3W8qsI0k+mE60nENJx6k4Cp9UGBz
+czGfu8Ln4F7tvwZDQlZWBIUQWYJjFAYSJIvtFYUgeZ4gTNAPfZpYDTFtqKDBAXAe
+QDI0tzWHrvYUBNMMNV2BWOL16YYu66dwucIwvC5TZQS9JlYHJc+qgUdCmoLPxYIA
+9PmRrgEXiUnZQKYjSQtOniM5jncAeNqLfNCDTMLJsXgxgjDHwAC25FmFExQSCizH
+kbwqM6wKZRkyTkmgeFYVZJ6laZZiaVaUoEjxTkpxqoREQwIyKi1RwDypRtOBi8Fr
+iuXY0o/KNdGo9UHQcMlqj7RYbZa1a2zmwyzRUTH/3xjZvt4yWDP/YWtoeKf7heNT
++47atqjlpvyEItdE6kJncF1y9sak5+NXnzrOGINweTpEXny3aI89/CtsHXIk9otN
+S7c2u5fc9hFutHJXaKagITWjWJz88Se5ZWro8Z7MVw8Gr7/89iRYvRTOj1Pimwvg
+9JHjGe8P3A+Ln+cSTmTNxBxqza4z+u4NHP04HhexvSzrxrPEtyW2m7u1TcV3hd+g
+MvvcfGBv8dT3sTcdx1BKb/xs3v6z4lxsS2EbCUt7S1Myk9q7eXewf3axs0q2n+za
+MjBf/+h8Ty8/WvgzdHsyzL1ucY3k9KmtqOyyfbgxbZh6OFTQPbavo3lhuQd5Lmy7
+E/0X
+=PVa/
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/tf
+==================================================================
