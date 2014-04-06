@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<title>TF: The global flow of people</title>
+<meta name=description content="Explore new estimates of migration flows between and within regions for five-year periods, 1990 to 2010. Click on a region to discover flows country-by-country. ">
+<meta name=author content="Johannes J. Schmidt, Berlin"> 
+<style>
+  body {
+    margin: 6.18% 10% 16.18% 10%;
+    font-family: Georgia, "Times New Roman", Times, serif;
+    font-size: 16pt;
+    background: white url(euru-4.png) no-repeat top left;
+  }
+  a {
+    text-decoration: none;
+    color: #2ca02c;
+  }
+  a:hover, a:active {
+    text-decoration: underline;
+  }
+  .contact {
+    float: right;
+    margin: 0 0 3ex 2em;
+  }
+  .author {
+    font-style: italic;
+  }
+  blockquote {
+    font-style: italic;
+  }
+  p:first-letter {
+    color: #d62728;
+  }
+  h1 {
+    color: #d62728;
+  }
+  h2 {
+    color: #777;
+    font-weight: normal;
+    margin-bottom: 0;
+  }
+  h3 {
+    color: silver;
+    font-size: 1em;
+    margin-top: 6ex;
+  }
+  .meta {
+    font-size: 0.75em;
+    margin: 0 0 9ex 0;
+  }
+  .multicolumn {
+    -moz-column-width: 23em;
+    -webkit-column-width: 23em;
+    column-width: 23em;
+    -moz-column-gap: 2em;
+    -webkit-column-gap: 2em;
+    column-gap: 2em;
+  }
+  .multicolumn p:first-child {
+    margin-top: 0;
+  }
+  pre {
+    font-size: 0.6em;
+    overflow: hidden;
+    width: 100%;
+    background: #eee;
+    border: 1px solid #ddd;
+    padding: 1ex 1em;
+    display: block;
+  }
+  pre:hover {
+    overflow: auto;
+  }
+
+
+  /* for chord layout */
+  #chord-layout {
+    font: 10px sans-serif;
+    text-align: center;
+  }
+  .chord path {
+    fill-opacity: .67;
+    stroke: #000;
+    stroke-width: .5px;
+  }
+
+
+  /* the global migration chart */
+  #global-migration-flow {
+    position: relative;
+    margin: 3ex auto;
+    max-height: 100vh;
+    max-width: 100vh;
+    /*
+    min-height: 600px;
+    min-width: 600px;
+    */
+  }
+
+  #global-migration-flow-chart {
+    font: 15px/1.8em Arial, sans-serif;
+    margin: 0;
+    text-align: center;
+  }
+  #global-migration-flow-chart svg {
+    font-size: 12px;
+    max-width: 100%;
+    vector-effect: non-scaling-stroke;
+  }
+  #global-migration-flow-chart .info, .label {
+    pointer-events: none;
+  }
+  #global-migration-flow-chart .info text {
+    fill: white;
+  }
+  #global-migration-flow-chart #circle circle {
+    fill: none;
+    pointer-events: all;
+  }
+  #global-migration-flow-chart text {
+    cursor: default;
+    fill: #333;
+  }
+  #global-migration-flow-chart .group-arc + text {
+    -webkit-transition: opacity 0.4s;
+    -moz-transition: opacity 0.4s;
+    -o-transition: opacity 0.4s;
+    transition: opacity 0.4s;
+  }
+  #global-migration-flow-chart .group-arc.animate + text {
+    opacity: 0;
+  }
+  #global-migration-flow-chart #circle path {
+    -webkit-transition: opacity 0.4s;
+    -moz-transition: opacity 0.4s;
+    -o-transition: opacity 0.4s;
+    transition: opacity 0.4s;
+  }
+  #global-migration-flow-chart #circle:hover path.fade,
+  #global-migration-flow-chart #circle path.unselected {
+    opacity: 0;
+    pointer-events: none;
+  }
+  #global-migration-flow-chart text.fade {
+    opacity: 0;
+  }
+  #global-migration-flow-chart .group-arc {
+    cursor: pointer;
+  }
+  #global-migration-flow-chart text.region {
+    font-weight: bold;
+  }
+  #global-migration-flow-chart .chord {
+    opacity: 0.75;
+  }
+  #global-migration-flow-chart .chord:hover {
+    opacity: 1;
+  }
+
+  #global-migration-flow-timeline {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  @media all and (max-width: 600px) {
+    #global-migration-flow-timeline {
+      font-size: 3vh;
+    }
+  }
+  #global-migration-flow-timeline span {
+    display: block;
+    margin: 1px 0;
+  }
+  #global-migration-flow-timeline span input {
+    display: none;
+  }
+  #global-migration-flow-timeline span label {
+    color: #aaa;
+    cursor: pointer;
+  }
+  #global-migration-flow-timeline span label:hover {
+    color: #666;
+  }
+  #global-migration-flow-timeline span input:checked + label {
+    color: black;
+  }
+</style>
+<body>
+<p class=contact>
+<a href="/">TF</a>
+<a href=/jo/>Johannes J. Schmidt</a>
+<br>
+<a href="mailto:schmidt@netzmerk.com">schmidt@netzmerk.com</a>
+<br>
+<a href=tel:01525-378-65-21>01525 378 65 21</a>
+
+<h1>The global flow of people</h1>
+<h2>Creating interactive circular plots using D3</h2>
+<p class=meta>
+Visualization credits: Nikola Sander, Guy J. Abel, Ramon Bauer at the Wittgenstein Centre for Demography and Global Human Capital.
+<br>
+Related paper: Abel, G.J. &amp; Sander, N. (2014). <a href="#insert-link-here">Quantifying Global International Migration Flows. Science, 343 (6178): 1520-1522.</a>
+<br>
+During happy employment by <a href="http://null2.net">null2 GmbH</a>. Special thanks to Andi Piper for more than a review.
+
+
+<div class=multicolumn>
+<p>D3 is a JavaScript library which empowers creating beautiful interactive
+visualisations in HTML.
+Although not tied to the Web per se, it is predominantly used to do data-driven
+manipulations of Web content. D3 is the fourth iteration of a visualization
+library, its precursors are Prefuse (Java, 2005), Flare (Actionscript, 2007) and Protoviz
+(Javascript, 2009).
+D3 was developed by Mike Bostock and sponsored by his employer, The New York Times.
+Since its <a href="https://github.com/mbostock/d3/commit/b2aa3c7355f46634738b46789c649c4e2da94e3e">release in 2010</a>,
+this JavaScript library has become the state-of-the-art for interactive data visualisations and is frequently used
+in emerging field of data journalism.
+
+<p>Using D3 to embedd Scalable Vector Graphics (SVGs) inside HTML documents makes it
+possible to dynamically create various shapes like circles, b ́ezier curves and rectangles.
+We bind the migration flow estimates by (Abel &amp; Sander, 2014) to SVGs to create a
+circular migration plot that can be shown on the web.
+
+<p>The main strenght of D3 is that SVG shapes can be manipulated based on the data they are bound to.
+This <a href="http://d3js.org/">data-driven</a> approach to Document Object Model (DOM;
+the programming interface for HTML documents) manipulation facilitates powerful visualization
+that is not tied to a proprietary framework. With the help of D3, we generate a circular
+plot with smooth transitions (a) between time periods, and (b) between region- and country- level views.
+User interaction is further enhanced through tooltips that show the numbers of
+migrants for a given flow, country or region when hovering over the plot with the mouse.
+<p>The functional style of D3 encouraged us to develop a library tailored
+at creating circular migration plots for the web.
+This library is available <a href="https://github.com/null2/circular-migration-plot">online on GitHub</a>
+and makes reusing our code for other visualisations of flow data extremely easy.
+In the remainder of this section, we discuss the main steps
+for creating interactive circular migration plots using our customised D3 library.
+</div>
+
+<h3>Data preparation</h3>
+<div class=multicolumn>
+<p>To minimize computation needs on the client, raw data is preprocessed and transformed to a
+structure best suited for the JavaScript language which in turn generates the visible circular
+plot. While the CSV format is a good fit for tabular data interchange,
+JSON (<a href="http://json.org/">JavaScript Object Notation</a>) has the ability
+to hold complex structured data and is natively parseable in Javascript programs.
+The output of the transform step is therefore JSON-formatted.
+</div>
+
+<p>Preprocessing involves two steps:
+<ol>
+  <li>Filter out countries with too small migration flows
+  <li>Transform into a D3-optimized JSON structure
+</ol>
+<p>
+The first step is to remove countries which have very small migration flows. Otherwise
+the graphic becomes too cluttered and unresponsive. Too many fine shapes also make it
+difficult to read the plot and distract from the key flows. The countries to be removed are
+defined in a seperate CSV file.
+
+<p>The interchange CSV looks like this:
+<pre>originregion_name,destinationregion_name,origin_iso,origin_name,destination_iso,destination_name,countryflow_1990,countryflow_1995,countryflow_2000,countryflow_2005
+North America,North America,CAN,Canada,CAN,Canada,0,0,0,0
+North America,North America,CAN,Canada,USA,United States,1509,190436,238,28
+North America,North America,USA,United States,CAN,Canada,56108,635,84430,96074
+North America,North America,USA,United States,USA,United States,0,0,0,0</pre>
+
+<p>The CSV file defining visible countries is formatted like this:
+<pre>iso,show
+USA,1
+FIN,0</pre>
+
+<p>In this example, <code>USA</code> will be shown, whereas <code>FIN</code> will be hidden.
+<p>The result of the first step is exactly like the input CSV, except that the rows where the
+value of the origin iso or destination iso columns have a 0 in the countries filter CSV are
+removed.
+<p>The output of step one is then used as input of the second step, the compile step. This
+one creates a data structure which can be consumed by the JavaScript running on the client
+in a fast and efficient manner.
+
+<p>The resulting final JSON looks like this:
+<pre>{
+  "regions": [0, 3, 36, 61, 74, 88, 96, 101, 110, 113],
+  "names": [
+    "North America",
+    "Canada",
+    "United States",
+    "Africa",
+    "Angola",
+    ...
+    "Venezuela"
+  ],
+  "matrix": {
+    "2005": [
+      [ 139950, ... 8621 ],
+      [ 51564, ... 458 ],
+      ...
+    ],
+    "1990": [
+      ...
+    ]
+  }
+}</pre>
+
+<div class=multicolumn>
+<p>To reduce the amount of chords displayed at any time, data is accumulated in region
+flows. Only Region flows are initially displayed in the plot. The user can expand a region
+to see individual country flows by clicking on the region.
+<p>There are only two regions expanded to individual countries at any time, again for per-
+fomance and focus reasons. When the user expands a third region, the first region collapses.
+<p>To achieve this, the region flows are stored in the flow matrix in the data structure,
+followed by the appropriate country flows. A regions index keeps track of the region flows.
+Expanding a region is then done by displaying all flows in the matrix between the current
+region index and the next region index. To display labels, region and country names are
+included. More on matrices and the data format can be <a href="https://github.com/mbostock/d3/wiki/Chord-Layout">found here</a>.
+<p>An implementation of these tasks as well as a description and usage instructions can be
+found in the <a href="https://github.com/null2/circular-migration-plot">Circular Migration Plot Library</a>.
+</div>
+
+<h3>Extending D3</h3>
+<p>While D3 provides helpful <a href="https://github.com/mbostock/d3/wiki/Chord-Layout">layouts for generating chords</a>,
+the original implementation shown above had to be extended to fit the requirements of circular migration plots:
+<div id=chord-layout></div>
+<p class=meta>Chord diagram by Mike Bostock showing directed relationships among a group
+of entities (Source: <a href="http://bl.ocks.org/mbostock/4062006">http://bl.ocks.org/mbostock/4062006</a>).
+<script src="d3.v3.min.js"></script>
+<script>
+// From http://mkweb.bcgsc.ca/circos/guide/tables/
+var matrix = [
+  [11975,  5871, 8916, 2868],
+  [ 1951, 10048, 2060, 6171],
+  [ 8010, 16145, 8090, 8045],
+  [ 1013,   990,  940, 6907]
+];
+
+var chord = d3.layout.chord()
+    .padding(.05)
+    .sortSubgroups(d3.descending)
+    .matrix(matrix);
+
+var width = 400,
+    height = 400,
+    innerRadius = Math.min(width, height) * .41,
+    outerRadius = innerRadius * 1.1;
+
+var fill = d3.scale.ordinal()
+    .domain(d3.range(4))
+    .range(["#000000", "#FFDD89", "#957244", "#F26223"]);
+
+var svg = d3.select("#chord-layout").append("svg")
+    .attr("width", width)
+    .attr("height", height)
+  .append("g")
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
+
+svg.append("g").selectAll("path")
+    .data(chord.groups)
+  .enter().append("path")
+    .style("fill", function(d) { return fill(d.index); })
+    .style("stroke", function(d) { return fill(d.index); })
+    .attr("d", d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius))
+    .on("mouseover", fade(.1))
+    .on("mouseout", fade(1));
+
+var ticks = svg.append("g").selectAll("g")
+    .data(chord.groups)
+  .enter().append("g").selectAll("g")
+    .data(groupTicks)
+  .enter().append("g")
+    .attr("transform", function(d) {
+      return "rotate(" + (d.angle * 180 / Math.PI - 90) + ")"
+          + "translate(" + outerRadius + ",0)";
+    });
+
+ticks.append("line")
+    .attr("x1", 1)
+    .attr("y1", 0)
+    .attr("x2", 5)
+    .attr("y2", 0)
+    .style("stroke", "#000");
+
+ticks.append("text")
+    .attr("x", 8)
+    .attr("dy", ".35em")
+    .attr("transform", function(d) { return d.angle > Math.PI ? "rotate(180)translate(-16)" : null; })
+    .style("text-anchor", function(d) { return d.angle > Math.PI ? "end" : null; })
+    .text(function(d) { return d.label; });
+
+svg.append("g")
+    .attr("class", "chord")
+  .selectAll("path")
+    .data(chord.chords)
+  .enter().append("path")
+    .attr("d", d3.svg.chord().radius(innerRadius))
+    .style("fill", function(d) { return fill(d.target.index); })
+    .style("opacity", 1);
+
+// Returns an array of tick angles and labels, given a group.
+function groupTicks(d) {
+  var k = (d.endAngle - d.startAngle) / d.value;
+  return d3.range(0, d.value, 1000).map(function(v, i) {
+    return {
+      angle: v * k + d.startAngle,
+      label: i % 5 ? null : v / 1000 + "k"
+    };
+  });
+}
+
+// Returns an event handler for fading a given chord group.
+function fade(opacity) {
+  return function(g, i) {
+    svg.selectAll(".chord path")
+        .filter(function(d) { return d.source.index != i && d.target.index != i; })
+      .transition()
+        .style("opacity", opacity);
+  };
+}
+</script>
+
+<div class=multicolumn>
+<p>In contrast to the chord diagram provided by Mike Bostock, we visualise
+migration flows as two directed chords, one for each directional flow between
+two countries/regions.
+A chord is a shape which displays a single flow. It is a geometric shape with two
+arcs connected with two bezier curves. The other difference to the original
+example is that the chord ends on a slightly smaller radius of the main circle.
+The gap between bezier and circle segment indicates the destination end of a migration flow.
+</div>
+
+<h3>The Chart</h3>
+<script src="circular-migration-plot.min.js"></script>
+<div id=global-migration-flow>
+  <div id=global-migration-flow-timeline></div>
+  <div id=global-migration-flow-chart></div>
+</div>
+<script>
+  CircularMigrationPlot({
+    data: 'flows.json',
+    chart: '#global-migration-flow-chart',
+    timeline: '#global-migration-flow-timeline'
+  });
+</script>
+
+<p><span class=author>Johannes</span>, <time datetime="2014-03-27">27. March 2013</time>
