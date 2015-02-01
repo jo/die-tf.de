@@ -41,22 +41,14 @@
   var t = document.getElementById('t')
   var f = document.getElementById('f')
 
-  var paused = false
-
-  function tick() {
-    if (!paused) {
-      t.innerHTML = ts[Math.floor(Math.random() * ts.length)]
-      f.innerHTML = fs[Math.floor(Math.random() * fs.length)]
-    }
-
-    setTimeout(tick, 42)
+  function tf() {
+    t.innerHTML = ts[Math.floor(Math.random() * ts.length)]
+    f.innerHTML = fs[Math.floor(Math.random() * fs.length)]
   }
 
-  window.onclick = window.onkeydown = function() {
-    paused = !paused
-  }
+  window.ontouch = window.ontouchmove = window.onclick = window.onkeydown = window.onmousemove = tf
 
-  tick()
+  tf()
 </script>
 <p class=contact>
 <a href="/">TF</a>
