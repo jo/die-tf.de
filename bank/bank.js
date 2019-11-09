@@ -360,6 +360,8 @@ function init() {
   trackballControls.keys = [ 65, 83, 68 ];
   trackballControls.addEventListener('change', render);
 
+  // trackballControls.update();
+
 
   window.addEventListener('resize', onWindowResize, false);
 
@@ -466,7 +468,7 @@ var loaded = false
 function animate() {
   requestAnimationFrame(animate);
   trackballControls.update();
-  if (loaded) renderer.render(scene, camera);
+  renderer.render(scene, camera);
 }
 
 function render(textureLoaded) {

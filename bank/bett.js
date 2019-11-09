@@ -484,7 +484,7 @@ var loaded = false
 function animate() {
   requestAnimationFrame(animate);
   trackballControls.update();
-  if (loaded) renderer.render(scene, camera);
+  renderer.render(scene, camera);
 }
 
 function render(textureLoaded) {
