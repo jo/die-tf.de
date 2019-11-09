@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<meta charset=utf-8>
+<title>Raumholz</title>
+<meta name=author content="Johannes J. Schmidt, TF Berlin"> 
+<meta name=viewport content="width=device-width, initial-scale=1.0"> 
+<style>
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+</style>
+<body>
+<div id=container></div>
+<script src=lib/three.min.js></script>
+<script src=lib/TrackballControls.js></script>
+<script src=lib/dat.gui.min.js></script>
+<script src=model.js></script>
+<script src=room.js></script>
+<script src=ui.js></script>
+<script>
+  var model = Model({
+    name: 'Bank',
+
+    lath: {
+      crossSection: { x: 60, y: 40 }
+    },
+
+    currentBoard: 'Left',
+    currentBoardIndex: 0,
+    boards: [
+      {
+        name: 'Left',
+        dimension: { length: 1000, width: 1000, thickness: 60 },
+        position: { x: 0, y: 0, z: 0 },
+        angle: 0,
+        modulo: 2,
+        layer: 0
+      },
+      {
+        name: 'Bottom',
+        dimension: { length: 1000, width: 1000, thickness: 60 },
+        position: { x: 1000, y: 0, z: 0 },
+        angle: 90,
+        modulo: 2,
+        layer: 1
+      },
+      {
+        name: 'Right',
+        dimension: { length: 1000, width: 1000, thickness: 60 },
+        position: { x: 940, y: 0, z: 0 },
+        angle: 0,
+        modulo: 2,
+        layer: 0
+      },
+      {
+        name: 'Top',
+        dimension: { length: 1000, width: 1000, thickness: 60 },
+        position: { x: 1000, y: 940, z: 0 },
+        angle: 90,
+        modulo: 2,
+        layer: 1
+      }
+    ]
+  })
+
+  Room.init(document.getElementById('container'), model)
+  Ui.init(model)
+</script>
